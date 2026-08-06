@@ -22,7 +22,7 @@ numpy==2.2.1
 soundfile==0.12.1
 
 # --- Perception / duplex ---
-webrtcvad-wheels==2.0.10
+webrtcvad-wheels==2.0.14
 
 # --- Providers (optional import, graceful degrade) ---
 httpx==0.28.1
