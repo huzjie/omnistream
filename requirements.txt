@@ -7,7 +7,7 @@ structlog==24.4.0
 anyio==4.7.0
 
 # --- Data & platform ---
-sqlalchemy==2.0.36
+sqlalchemy==2.0.51
 alembic==1.14.0
 redis==5.2.1
 celery==5.4.0
