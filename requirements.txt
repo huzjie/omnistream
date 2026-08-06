@@ -9,7 +9,7 @@ anyio==4.7.0
 # --- Data & platform ---
 sqlalchemy==2.0.36
 alembic==1.14.0
-redis==5.2.1
+redis==8.1.0
 celery==5.4.0
 passlib[bcrypt]==1.7.4
 pyjwt==2.10.1
