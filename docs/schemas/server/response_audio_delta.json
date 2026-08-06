@@ -1,0 +1,51 @@
+{
+  "$defs": {
+    "AudioEncoding": {
+      "enum": [
+        "pcm16",
+        "pcm_f32",
+        "opus",
+        "mulaw"
+      ],
+      "title": "AudioEncoding",
+      "type": "string"
+    }
+  },
+  "description": "音频增量。高频场景建议走二进制帧，本模型用于 JSON 通道与录制回放。",
+  "properties": {
+    "audio": {
+      "description": "base64 编码的 PCM 数据",
+      "title": "Audio",
+      "type": "string"
+    },
+    "channels": {
+      "default": 1,
+      "title": "Channels",
+      "type": "integer"
+    },
+    "encoding": {
+      "$ref": "#/$defs/AudioEncoding",
+      "default": "pcm16"
+    },
+    "pts_ms": {
+      "default": 0,
+      "title": "Pts Ms",
+      "type": "integer"
+    },
+    "sample_rate": {
+      "default": 24000,
+      "title": "Sample Rate",
+      "type": "integer"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id",
+    "audio"
+  ],
+  "title": "AudioDelta",
+  "type": "object"
+}

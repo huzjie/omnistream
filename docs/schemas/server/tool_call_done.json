@@ -1,0 +1,67 @@
+{
+  "$defs": {
+    "ToolCallState": {
+      "enum": [
+        "pending",
+        "running",
+        "succeeded",
+        "failed",
+        "timeout",
+        "cancelled"
+      ],
+      "title": "ToolCallState",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "call_id": {
+      "title": "Call Id",
+      "type": "string"
+    },
+    "content": {
+      "default": null,
+      "title": "Content"
+    },
+    "elapsed_ms": {
+      "default": 0.0,
+      "title": "Elapsed Ms",
+      "type": "number"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error"
+    },
+    "name": {
+      "default": "",
+      "title": "Name",
+      "type": "string"
+    },
+    "ok": {
+      "default": true,
+      "title": "Ok",
+      "type": "boolean"
+    },
+    "state": {
+      "$ref": "#/$defs/ToolCallState",
+      "default": "succeeded"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "call_id",
+    "turn_id"
+  ],
+  "title": "ToolCallDoneOut",
+  "type": "object"
+}

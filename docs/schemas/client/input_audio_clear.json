@@ -1,0 +1,14 @@
+{
+  "additionalProperties": false,
+  "description": "``input_audio.clear`` —— 丢弃尚未提交的输入缓冲。",
+  "properties": {
+    "reason": {
+      "default": "user_cancel",
+      "maxLength": 120,
+      "title": "Reason",
+      "type": "string"
+    }
+  },
+  "title": "InputAudioClear",
+  "type": "object"
+}

@@ -1,0 +1,37 @@
+{
+  "$defs": {
+    "TurnRole": {
+      "enum": [
+        "user",
+        "assistant",
+        "system"
+      ],
+      "title": "TurnRole",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "``input_text.send`` —— 纯文本输入（打字模式 / 无麦环境）。",
+  "properties": {
+    "create_response": {
+      "default": true,
+      "title": "Create Response",
+      "type": "boolean"
+    },
+    "role": {
+      "$ref": "#/$defs/TurnRole",
+      "default": "user"
+    },
+    "text": {
+      "maxLength": 32000,
+      "minLength": 1,
+      "title": "Text",
+      "type": "string"
+    }
+  },
+  "required": [
+    "text"
+  ],
+  "title": "InputTextSend",
+  "type": "object"
+}

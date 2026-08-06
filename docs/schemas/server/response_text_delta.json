@@ -1,0 +1,23 @@
+{
+  "properties": {
+    "delta": {
+      "title": "Delta",
+      "type": "string"
+    },
+    "index": {
+      "default": 0,
+      "title": "Index",
+      "type": "integer"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id",
+    "delta"
+  ],
+  "title": "TextDelta",
+  "type": "object"
+}

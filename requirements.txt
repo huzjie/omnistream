@@ -1,0 +1,36 @@
+# --- Core runtime ---
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+structlog==24.4.0
+anyio==4.7.0
+
+# --- Data & platform ---
+sqlalchemy==2.0.36
+alembic==1.14.0
+redis==5.2.1
+celery==5.4.0
+passlib[bcrypt]==1.7.4
+pyjwt==2.10.1
+python-multipart==0.0.20
+
+# --- Realtime media ---
+aiortc==1.9.0
+av==13.1.0
+numpy==2.2.1
+soundfile==0.12.1
+
+# --- Perception / duplex ---
+webrtcvad-wheels==2.0.10
+
+# --- Providers (optional import, graceful degrade) ---
+httpx==0.28.1
+websockets==14.1
+
+# --- Observability ---
+prometheus-client==0.21.1
+opentelemetry-api==1.29.0
+opentelemetry-sdk==1.29.0
+opentelemetry-instrumentation-fastapi==0.50b0
+opentelemetry-exporter-otlp-proto-http==1.29.0

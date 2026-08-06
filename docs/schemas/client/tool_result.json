@@ -1,0 +1,45 @@
+{
+  "additionalProperties": false,
+  "description": "``tool.result`` —— 回填客户端侧工具的执行结果。",
+  "properties": {
+    "call_id": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Call Id",
+      "type": "string"
+    },
+    "content": {
+      "default": null,
+      "title": "Content"
+    },
+    "elapsed_ms": {
+      "default": 0.0,
+      "minimum": 0.0,
+      "title": "Elapsed Ms",
+      "type": "number"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "maxLength": 2000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error"
+    },
+    "ok": {
+      "default": true,
+      "title": "Ok",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "call_id"
+  ],
+  "title": "ToolResultIn",
+  "type": "object"
+}

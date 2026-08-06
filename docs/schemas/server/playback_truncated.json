@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "dropped_frames": {
+      "default": 0,
+      "title": "Dropped Frames",
+      "type": "integer"
+    },
+    "dropped_ms": {
+      "default": 0,
+      "title": "Dropped Ms",
+      "type": "integer"
+    },
+    "truncated_at_ms": {
+      "default": 0,
+      "title": "Truncated At Ms",
+      "type": "integer"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id"
+  ],
+  "title": "PlaybackTruncated",
+  "type": "object"
+}

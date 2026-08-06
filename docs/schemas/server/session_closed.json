@@ -1,0 +1,44 @@
+{
+  "$defs": {
+    "SessionState": {
+      "enum": [
+        "created",
+        "active",
+        "ending",
+        "ended",
+        "failed"
+      ],
+      "title": "SessionState",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "duration_ms": {
+      "default": 0,
+      "title": "Duration Ms",
+      "type": "integer"
+    },
+    "reason": {
+      "default": "completed",
+      "title": "Reason",
+      "type": "string"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/SessionState",
+      "default": "ended"
+    },
+    "stats": {
+      "title": "Stats",
+      "type": "object"
+    }
+  },
+  "required": [
+    "session_id"
+  ],
+  "title": "SessionClosed",
+  "type": "object"
+}

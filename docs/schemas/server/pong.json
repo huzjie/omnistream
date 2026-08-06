@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "nonce": {
+      "default": "",
+      "title": "Nonce",
+      "type": "string"
+    },
+    "rtt_hint_ms": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Rtt Hint Ms"
+    },
+    "server_time_ms": {
+      "default": 0,
+      "title": "Server Time Ms",
+      "type": "integer"
+    }
+  },
+  "title": "Pong",
+  "type": "object"
+}

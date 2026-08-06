@@ -1,0 +1,14 @@
+{
+  "additionalProperties": false,
+  "description": "``session.close`` —— 客户端主动结束会话。",
+  "properties": {
+    "reason": {
+      "default": "client_request",
+      "maxLength": 200,
+      "title": "Reason",
+      "type": "string"
+    }
+  },
+  "title": "SessionClose",
+  "type": "object"
+}

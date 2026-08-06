@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install deps
+        run: pip install ruff mypy
+      - name: Ruff check
+        run: ruff check omnistream sdk-python/src scripts --output-format=concise
+      - name: MyPy (core only)
+        run: mypy omnistream/core omnistream/protocol omnistream/schemas --ignore-missing-imports --follow-imports=skip
+      - name: Frontend type check
+        run: |
+          cd frontend
+          npm install --no-audit --no-fund
+          npx tsc --noEmit
+
+  build:
+    name: Build & Import Smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install
+        run: pip install -r requirements.txt
+      - name: Verify package imports
+        run: |
+          python -c "from omnistream.api.app import app; print('API app OK')"
+          python -c "import omnistream.core, omnistream.protocol, omnistream.schemas; print('Core OK')"
+          python -c "from omnistream.providers.registry import ProviderRegistry; print('Provider registry OK')"
+          python -c "from omnistream.memory.manager import MemoryManager; print('Memory OK')"
+          python -c "from omnistream.tools.orchestrator import ToolOrchestrator; print('Tools OK')"
+      - name: Mock E2E smoke
+        run: |
+          OMS_PROVIDERS__DEFAULT=mock OMS_STORAGE__DATABASE_URL=sqlite:///:memory: \
+            python scripts/smoke_mock.py

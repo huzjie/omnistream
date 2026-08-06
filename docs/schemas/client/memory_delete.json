@@ -1,0 +1,57 @@
+{
+  "$defs": {
+    "MemoryLayer": {
+      "enum": [
+        "session",
+        "private_state",
+        "stable_knowledge",
+        "procedural"
+      ],
+      "title": "MemoryLayer",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "``memory.delete`` —— 按 id 或 (layer, key) 删除记忆。",
+  "properties": {
+    "id": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Id"
+    },
+    "key": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Key"
+    },
+    "layer": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MemoryLayer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "title": "MemoryDelete",
+  "type": "object"
+}

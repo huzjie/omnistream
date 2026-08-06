@@ -1,0 +1,61 @@
+{
+  "$defs": {
+    "VisualEntityOut": {
+      "properties": {
+        "bbox": {
+          "description": "[x, y, w, h] 归一化坐标",
+          "items": {
+            "type": "number"
+          },
+          "title": "Bbox",
+          "type": "array"
+        },
+        "confidence": {
+          "default": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label"
+      ],
+      "title": "VisualEntityOut",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "description": {
+      "default": "",
+      "title": "Description",
+      "type": "string"
+    },
+    "entities": {
+      "items": {
+        "$ref": "#/$defs/VisualEntityOut"
+      },
+      "title": "Entities",
+      "type": "array"
+    },
+    "latency_ms": {
+      "default": 0.0,
+      "title": "Latency Ms",
+      "type": "number"
+    },
+    "pts_ms": {
+      "default": 0,
+      "title": "Pts Ms",
+      "type": "integer"
+    },
+    "scene_change": {
+      "default": false,
+      "title": "Scene Change",
+      "type": "boolean"
+    }
+  },
+  "title": "VisionObservationOut",
+  "type": "object"
+}

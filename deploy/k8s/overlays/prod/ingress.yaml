@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: omnistream
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: omnistream-ingress
+  namespace: omnistream
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host: omnistream.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: omnistream-api
+                port:
+                  number: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: omnistream-config
+  namespace: omnistream
+data:
+  OMS_HOST: "0.0.0.0"
+  OMS_PORT: "8000"
+  OMS_PROVIDERS__DEFAULT: mock
+  OMS_STORAGE__USE_REDIS: "false"
+  OMS_MEMORY__ENABLED: "true"

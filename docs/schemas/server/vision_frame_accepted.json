@@ -1,0 +1,31 @@
+{
+  "properties": {
+    "accepted": {
+      "default": true,
+      "title": "Accepted",
+      "type": "boolean"
+    },
+    "fps_effective": {
+      "default": 0.0,
+      "title": "Fps Effective",
+      "type": "number"
+    },
+    "keyframe_score": {
+      "default": 0.0,
+      "title": "Keyframe Score",
+      "type": "number"
+    },
+    "pts_ms": {
+      "default": 0,
+      "title": "Pts Ms",
+      "type": "integer"
+    },
+    "reason": {
+      "default": "",
+      "title": "Reason",
+      "type": "string"
+    }
+  },
+  "title": "VisionFrameAccepted",
+  "type": "object"
+}

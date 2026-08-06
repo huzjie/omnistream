@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "omnistream-sdk"
+version = "1.0.0"
+description = "OmniStream Python SDK — realtime full-duplex omni-modal client"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+dependencies = [
+    "httpx>=0.28.0",
+    "websockets>=14.0",
+]
+
+[project.optional-dependencies]
+cli = ["click>=8.1"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

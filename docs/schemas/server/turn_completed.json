@@ -1,0 +1,59 @@
+{
+  "$defs": {
+    "StopReason": {
+      "enum": [
+        "completed",
+        "interrupted",
+        "cancelled",
+        "timeout",
+        "error",
+        "max_duration",
+        "tool_pending"
+      ],
+      "title": "StopReason",
+      "type": "string"
+    },
+    "TurnRole": {
+      "enum": [
+        "user",
+        "assistant",
+        "system"
+      ],
+      "title": "TurnRole",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "index": {
+      "default": 0,
+      "title": "Index",
+      "type": "integer"
+    },
+    "metrics": {
+      "title": "Metrics",
+      "type": "object"
+    },
+    "role": {
+      "$ref": "#/$defs/TurnRole",
+      "default": "assistant"
+    },
+    "stop_reason": {
+      "$ref": "#/$defs/StopReason",
+      "default": "completed"
+    },
+    "text": {
+      "default": "",
+      "title": "Text",
+      "type": "string"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id"
+  ],
+  "title": "TurnCompleted",
+  "type": "object"
+}

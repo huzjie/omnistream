@@ -1,0 +1,56 @@
+{
+  "$defs": {
+    "ToolCallState": {
+      "enum": [
+        "pending",
+        "running",
+        "succeeded",
+        "failed",
+        "timeout",
+        "cancelled"
+      ],
+      "title": "ToolCallState",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "arguments": {
+      "title": "Arguments",
+      "type": "object"
+    },
+    "call_id": {
+      "title": "Call Id",
+      "type": "string"
+    },
+    "executed_by": {
+      "default": "client",
+      "description": "client | server",
+      "title": "Executed By",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "requires_confirmation": {
+      "default": false,
+      "title": "Requires Confirmation",
+      "type": "boolean"
+    },
+    "state": {
+      "$ref": "#/$defs/ToolCallState",
+      "default": "pending"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "call_id",
+    "turn_id",
+    "name"
+  ],
+  "title": "ToolCallOut",
+  "type": "object"
+}

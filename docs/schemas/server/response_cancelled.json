@@ -1,0 +1,37 @@
+{
+  "$defs": {
+    "StopReason": {
+      "enum": [
+        "completed",
+        "interrupted",
+        "cancelled",
+        "timeout",
+        "error",
+        "max_duration",
+        "tool_pending"
+      ],
+      "title": "StopReason",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "reason": {
+      "$ref": "#/$defs/StopReason",
+      "default": "interrupted"
+    },
+    "truncated_at_ms": {
+      "default": 0,
+      "title": "Truncated At Ms",
+      "type": "integer"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id"
+  ],
+  "title": "ResponseCancelled",
+  "type": "object"
+}

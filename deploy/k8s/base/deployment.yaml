@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omnistream-api
+  labels:
+    app: omnistream
+    tier: api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: omnistream
+      tier: api
+  template:
+    metadata:
+      labels:
+        app: omnistream
+        tier: api
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/huzjie/omnistream:main
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              name: http
+            - containerPort: 9464
+              name: metrics
+          envFrom:
+            - secretRef:
+                name: omnistream-secrets
+          env:
+            - name: OMS_STORAGE__USE_REDIS
+              value: "false"
+            - name: OMS_PROVIDERS__DEFAULT
+              value: mock
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: omnistream-api
+  labels:
+    app: omnistream
+spec:
+  selector:
+    app: omnistream
+    tier: api
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+    - name: metrics
+      port: 9464
+      targetPort: 9464
+  type: ClusterIP

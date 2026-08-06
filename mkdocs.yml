@@ -1,0 +1,101 @@
+site_name: OmniStream
+site_description: >-
+  Enterprise-grade realtime full-duplex omni-modal (audio + video + text)
+  interaction platform. Self-hostable, multi-provider, observable.
+site_url: https://omnistream.github.io/omnistream/
+repo_url: https://github.com/omnistream/omnistream
+repo_name: omnistream/omnistream
+edit_uri: edit/main/docs/
+copyright: Copyright &copy; 2026 OmniStream contributors — Apache-2.0
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: en
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Protocol spec: protocol-spec.md
+  - Configuration: configuration.md
+  - Error codes: error-codes.md
+  - Decisions:
+      - "0001 · Python-first monolith": adr/0001-python-first-monolith.md
+      - "0002 · Provider abstraction": adr/0002-provider-abstraction.md
+      - "0003 · Binary WS frame": adr/0003-binary-ws-frame.md
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+plugins:
+  - search
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/omnistream/omnistream
+  version:
+    provider: mike
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+
+strict: false

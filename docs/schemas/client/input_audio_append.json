@@ -1,0 +1,52 @@
+{
+  "$defs": {
+    "AudioEncoding": {
+      "enum": [
+        "pcm16",
+        "pcm_f32",
+        "opus",
+        "mulaw"
+      ],
+      "title": "AudioEncoding",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "``input_audio.append`` —— 追加一段用户音频。\n\n高频音频建议走二进制帧（见 :mod:`omnistream.protocol.binary`）；\n本事件用于低频、调试或不便发二进制的客户端。",
+  "properties": {
+    "audio": {
+      "description": "base64 编码的音频负载",
+      "title": "Audio",
+      "type": "string"
+    },
+    "channels": {
+      "default": 1,
+      "maximum": 2,
+      "minimum": 1,
+      "title": "Channels",
+      "type": "integer"
+    },
+    "encoding": {
+      "$ref": "#/$defs/AudioEncoding",
+      "default": "pcm16"
+    },
+    "pts_ms": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Pts Ms",
+      "type": "integer"
+    },
+    "sample_rate": {
+      "default": 16000,
+      "maximum": 48000,
+      "minimum": 8000,
+      "title": "Sample Rate",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "audio"
+  ],
+  "title": "InputAudioAppend",
+  "type": "object"
+}

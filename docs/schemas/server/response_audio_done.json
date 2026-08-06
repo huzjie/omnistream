@@ -1,0 +1,23 @@
+{
+  "properties": {
+    "total_bytes": {
+      "default": 0,
+      "title": "Total Bytes",
+      "type": "integer"
+    },
+    "total_ms": {
+      "default": 0,
+      "title": "Total Ms",
+      "type": "integer"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id"
+  ],
+  "title": "AudioDone",
+  "type": "object"
+}

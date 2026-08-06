@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "audio_start_ms": {
+      "default": 0,
+      "title": "Audio Start Ms",
+      "type": "integer"
+    },
+    "energy_db": {
+      "default": 0.0,
+      "title": "Energy Db",
+      "type": "number"
+    },
+    "turn_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Turn Id"
+    }
+  },
+  "title": "SpeechStarted",
+  "type": "object"
+}

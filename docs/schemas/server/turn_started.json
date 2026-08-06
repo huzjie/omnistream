@@ -1,0 +1,48 @@
+{
+  "$defs": {
+    "TurnRole": {
+      "enum": [
+        "user",
+        "assistant",
+        "system"
+      ],
+      "title": "TurnRole",
+      "type": "string"
+    },
+    "TurnState": {
+      "enum": [
+        "idle",
+        "listening",
+        "thinking",
+        "speaking",
+        "interrupted"
+      ],
+      "title": "TurnState",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "index": {
+      "default": 0,
+      "title": "Index",
+      "type": "integer"
+    },
+    "role": {
+      "$ref": "#/$defs/TurnRole",
+      "default": "assistant"
+    },
+    "state": {
+      "$ref": "#/$defs/TurnState",
+      "default": "listening"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id"
+  ],
+  "title": "TurnStarted",
+  "type": "object"
+}

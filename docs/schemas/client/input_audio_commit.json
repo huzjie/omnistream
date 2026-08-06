@@ -1,0 +1,14 @@
+{
+  "additionalProperties": false,
+  "description": "``input_audio.commit`` —— 手动 VAD 模式下标记本轮输入结束。",
+  "properties": {
+    "create_response": {
+      "default": true,
+      "description": "提交后是否立即请求生成",
+      "title": "Create Response",
+      "type": "boolean"
+    }
+  },
+  "title": "InputAudioCommit",
+  "type": "object"
+}

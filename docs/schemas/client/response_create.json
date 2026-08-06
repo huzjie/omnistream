@@ -1,0 +1,75 @@
+{
+  "$defs": {
+    "Modality": {
+      "enum": [
+        "text",
+        "audio",
+        "video"
+      ],
+      "title": "Modality",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "``response.create`` —— 请求模型生成一轮回复。",
+  "properties": {
+    "instructions_suffix": {
+      "anyOf": [
+        {
+          "maxLength": 8000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Instructions Suffix"
+    },
+    "max_output_tokens": {
+      "anyOf": [
+        {
+          "maximum": 32768,
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Max Output Tokens"
+    },
+    "modalities": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/Modality"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Modalities"
+    },
+    "temperature": {
+      "anyOf": [
+        {
+          "maximum": 2.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Temperature"
+    }
+  },
+  "title": "ResponseCreate",
+  "type": "object"
+}

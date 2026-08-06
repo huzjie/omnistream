@@ -1,0 +1,41 @@
+{
+  "$defs": {
+    "StopReason": {
+      "enum": [
+        "completed",
+        "interrupted",
+        "cancelled",
+        "timeout",
+        "error",
+        "max_duration",
+        "tool_pending"
+      ],
+      "title": "StopReason",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "``response.cancel`` —— 取消当前生成（客户端侧打断）。",
+  "properties": {
+    "reason": {
+      "$ref": "#/$defs/StopReason",
+      "default": "interrupted"
+    },
+    "truncate_at_ms": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "已播放到的位置，用于服务端裁剪上下文",
+      "title": "Truncate At Ms"
+    }
+  },
+  "title": "ResponseCancel",
+  "type": "object"
+}

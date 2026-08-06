@@ -1,0 +1,13 @@
+{
+  "additionalProperties": false,
+  "description": "``session.update`` —— 中途更新会话配置（换音色、改指令、增删工具）。",
+  "properties": {
+    "session": {
+      "description": "SessionConfig 的部分字段",
+      "title": "Session",
+      "type": "object"
+    }
+  },
+  "title": "SessionUpdate",
+  "type": "object"
+}

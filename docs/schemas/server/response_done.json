@@ -1,0 +1,48 @@
+{
+  "$defs": {
+    "StopReason": {
+      "enum": [
+        "completed",
+        "interrupted",
+        "cancelled",
+        "timeout",
+        "error",
+        "max_duration",
+        "tool_pending"
+      ],
+      "title": "StopReason",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "metrics": {
+      "title": "Metrics",
+      "type": "object"
+    },
+    "stop_reason": {
+      "$ref": "#/$defs/StopReason",
+      "default": "completed"
+    },
+    "text": {
+      "default": "",
+      "title": "Text",
+      "type": "string"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    },
+    "usage": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Usage",
+      "type": "object"
+    }
+  },
+  "required": [
+    "turn_id"
+  ],
+  "title": "ResponseDone",
+  "type": "object"
+}

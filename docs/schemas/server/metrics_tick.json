@@ -1,0 +1,86 @@
+{
+  "properties": {
+    "audio_in_ms": {
+      "default": 0,
+      "title": "Audio In Ms",
+      "type": "integer"
+    },
+    "audio_out_ms": {
+      "default": 0,
+      "title": "Audio Out Ms",
+      "type": "integer"
+    },
+    "barge_in_ms": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Barge In Ms"
+    },
+    "dropped_frames": {
+      "default": 0,
+      "title": "Dropped Frames",
+      "type": "integer"
+    },
+    "e2e_ms": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "E2E Ms"
+    },
+    "queue_depth": {
+      "default": 0,
+      "title": "Queue Depth",
+      "type": "integer"
+    },
+    "ttfa_ms": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ttfa Ms"
+    },
+    "ttft_ms": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ttft Ms"
+    },
+    "turn_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Turn Id"
+    }
+  },
+  "title": "MetricsTick",
+  "type": "object"
+}

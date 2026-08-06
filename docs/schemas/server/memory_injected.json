@@ -1,0 +1,59 @@
+{
+  "$defs": {
+    "MemoryLayer": {
+      "enum": [
+        "session",
+        "private_state",
+        "stable_knowledge",
+        "procedural"
+      ],
+      "title": "MemoryLayer",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "budget_left": {
+      "default": 0,
+      "title": "Budget Left",
+      "type": "integer"
+    },
+    "layer": {
+      "$ref": "#/$defs/MemoryLayer",
+      "default": "session"
+    },
+    "memory_id": {
+      "title": "Memory Id",
+      "type": "string"
+    },
+    "novelty": {
+      "default": 0.0,
+      "title": "Novelty",
+      "type": "number"
+    },
+    "reason": {
+      "default": "",
+      "title": "Reason",
+      "type": "string"
+    },
+    "relevance": {
+      "default": 0.0,
+      "title": "Relevance",
+      "type": "number"
+    },
+    "rendered": {
+      "default": "",
+      "title": "Rendered",
+      "type": "string"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id",
+    "memory_id"
+  ],
+  "title": "MemoryInjected",
+  "type": "object"
+}

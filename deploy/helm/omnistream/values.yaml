@@ -1,0 +1,44 @@
+global:
+  image:
+    repository: ghcr.io/huzjie/omnistream
+    tag: main
+    pullPolicy: IfNotPresent
+
+replicaCount: 2
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: omnistream.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+env:
+  OMS_HOST: "0.0.0.0"
+  OMS_PORT: "8000"
+  OMS_PROVIDERS__DEFAULT: mock
+  OMS_STORAGE__USE_REDIS: "false"
+
+secrets:
+  OMS_SECRET_KEY: "change-me-in-production"
+  OMS_PROVIDERS__OPENAI__API_KEY: "sk_*_REDACTED_EXAMPLE_*"
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: false

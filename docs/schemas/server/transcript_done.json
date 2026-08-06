@@ -1,0 +1,43 @@
+{
+  "properties": {
+    "confidence": {
+      "default": 1.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "end_ms": {
+      "default": 0,
+      "title": "End Ms",
+      "type": "integer"
+    },
+    "language": {
+      "default": "zh-CN",
+      "title": "Language",
+      "type": "string"
+    },
+    "speaker": {
+      "default": "user",
+      "title": "Speaker",
+      "type": "string"
+    },
+    "start_ms": {
+      "default": 0,
+      "title": "Start Ms",
+      "type": "integer"
+    },
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id",
+    "text"
+  ],
+  "title": "TranscriptDoneOut",
+  "type": "object"
+}

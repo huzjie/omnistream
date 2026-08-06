@@ -1,0 +1,51 @@
+{
+  "$defs": {
+    "VideoEncoding": {
+      "enum": [
+        "jpeg",
+        "webp",
+        "rgb24"
+      ],
+      "title": "VideoEncoding",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "``input_video.frame`` —— 上传一帧画面。",
+  "properties": {
+    "encoding": {
+      "$ref": "#/$defs/VideoEncoding",
+      "default": "jpeg"
+    },
+    "height": {
+      "default": 0,
+      "maximum": 8192,
+      "minimum": 0,
+      "title": "Height",
+      "type": "integer"
+    },
+    "image": {
+      "description": "base64 编码的图像数据",
+      "title": "Image",
+      "type": "string"
+    },
+    "pts_ms": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Pts Ms",
+      "type": "integer"
+    },
+    "width": {
+      "default": 0,
+      "maximum": 8192,
+      "minimum": 0,
+      "title": "Width",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "image"
+  ],
+  "title": "InputVideoFrame",
+  "type": "object"
+}

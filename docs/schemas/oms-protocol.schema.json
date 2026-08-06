@@ -1,0 +1,2010 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "binary_frame": {
+    "audio_header": {
+      "ch": "int",
+      "enc": "string",
+      "pts": "int",
+      "seq": "int?",
+      "sid": "string",
+      "sr": "int"
+    },
+    "layout": [
+      {
+        "field": "magic",
+        "offset": 0,
+        "size": 4,
+        "value": "OMS1"
+      },
+      {
+        "enum": {
+          "1": "audio",
+          "2": "video"
+        },
+        "field": "kind",
+        "offset": 4,
+        "size": 1
+      },
+      {
+        "field": "header_len",
+        "offset": 5,
+        "size": 2,
+        "type": "uint16le"
+      },
+      {
+        "field": "header",
+        "offset": 7,
+        "size": "header_len",
+        "type": "json-utf8"
+      },
+      {
+        "field": "payload",
+        "offset": "7+header_len",
+        "size": "rest",
+        "type": "bytes"
+      }
+    ],
+    "limits": {
+      "max_header_bytes": 4096,
+      "max_payload_bytes": 4194304
+    },
+    "magic": "OMS1",
+    "video_header": {
+      "enc": "string",
+      "h": "int",
+      "ks": "float",
+      "pts": "int",
+      "sid": "string",
+      "w": "int"
+    }
+  },
+  "client_events": {
+    "input_audio.append": {
+      "$defs": {
+        "AudioEncoding": {
+          "enum": [
+            "pcm16",
+            "pcm_f32",
+            "opus",
+            "mulaw"
+          ],
+          "title": "AudioEncoding",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "description": "``input_audio.append`` —— 追加一段用户音频。\n\n高频音频建议走二进制帧（见 :mod:`omnistream.protocol.binary`）；\n本事件用于低频、调试或不便发二进制的客户端。",
+      "properties": {
+        "audio": {
+          "description": "base64 编码的音频负载",
+          "title": "Audio",
+          "type": "string"
+        },
+        "channels": {
+          "default": 1,
+          "maximum": 2,
+          "minimum": 1,
+          "title": "Channels",
+          "type": "integer"
+        },
+        "encoding": {
+          "$ref": "#/$defs/AudioEncoding",
+          "default": "pcm16"
+        },
+        "pts_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Pts Ms",
+          "type": "integer"
+        },
+        "sample_rate": {
+          "default": 16000,
+          "maximum": 48000,
+          "minimum": 8000,
+          "title": "Sample Rate",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "audio"
+      ],
+      "title": "InputAudioAppend",
+      "type": "object"
+    },
+    "input_audio.clear": {
+      "additionalProperties": false,
+      "description": "``input_audio.clear`` —— 丢弃尚未提交的输入缓冲。",
+      "properties": {
+        "reason": {
+          "default": "user_cancel",
+          "maxLength": 120,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "title": "InputAudioClear",
+      "type": "object"
+    },
+    "input_audio.commit": {
+      "additionalProperties": false,
+      "description": "``input_audio.commit`` —— 手动 VAD 模式下标记本轮输入结束。",
+      "properties": {
+        "create_response": {
+          "default": true,
+          "description": "提交后是否立即请求生成",
+          "title": "Create Response",
+          "type": "boolean"
+        }
+      },
+      "title": "InputAudioCommit",
+      "type": "object"
+    },
+    "input_text.send": {
+      "$defs": {
+        "TurnRole": {
+          "enum": [
+            "user",
+            "assistant",
+            "system"
+          ],
+          "title": "TurnRole",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "description": "``input_text.send`` —— 纯文本输入（打字模式 / 无麦环境）。",
+      "properties": {
+        "create_response": {
+          "default": true,
+          "title": "Create Response",
+          "type": "boolean"
+        },
+        "role": {
+          "$ref": "#/$defs/TurnRole",
+          "default": "user"
+        },
+        "text": {
+          "maxLength": 32000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "InputTextSend",
+      "type": "object"
+    },
+    "input_video.frame": {
+      "$defs": {
+        "VideoEncoding": {
+          "enum": [
+            "jpeg",
+            "webp",
+            "rgb24"
+          ],
+          "title": "VideoEncoding",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "description": "``input_video.frame`` —— 上传一帧画面。",
+      "properties": {
+        "encoding": {
+          "$ref": "#/$defs/VideoEncoding",
+          "default": "jpeg"
+        },
+        "height": {
+          "default": 0,
+          "maximum": 8192,
+          "minimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "image": {
+          "description": "base64 编码的图像数据",
+          "title": "Image",
+          "type": "string"
+        },
+        "pts_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Pts Ms",
+          "type": "integer"
+        },
+        "width": {
+          "default": 0,
+          "maximum": 8192,
+          "minimum": 0,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "image"
+      ],
+      "title": "InputVideoFrame",
+      "type": "object"
+    },
+    "memory.delete": {
+      "$defs": {
+        "MemoryLayer": {
+          "enum": [
+            "session",
+            "private_state",
+            "stable_knowledge",
+            "procedural"
+          ],
+          "title": "MemoryLayer",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "description": "``memory.delete`` —— 按 id 或 (layer, key) 删除记忆。",
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "key": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Key"
+        },
+        "layer": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MemoryLayer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "title": "MemoryDelete",
+      "type": "object"
+    },
+    "memory.upsert": {
+      "$defs": {
+        "MemoryLayer": {
+          "enum": [
+            "session",
+            "private_state",
+            "stable_knowledge",
+            "procedural"
+          ],
+          "title": "MemoryLayer",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "description": "``memory.upsert`` —— 客户端显式写入一条记忆。",
+      "properties": {
+        "confidence": {
+          "default": 0.8,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "content": {
+          "maxLength": 8000,
+          "minLength": 1,
+          "title": "Content",
+          "type": "string"
+        },
+        "importance": {
+          "default": 0.5,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Importance",
+          "type": "number"
+        },
+        "key": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Key"
+        },
+        "layer": {
+          "$ref": "#/$defs/MemoryLayer",
+          "default": "session"
+        },
+        "subject": {
+          "default": "user",
+          "maxLength": 64,
+          "title": "Subject",
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "ttl_s": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ttl S"
+        }
+      },
+      "required": [
+        "content"
+      ],
+      "title": "MemoryUpsert",
+      "type": "object"
+    },
+    "ping": {
+      "additionalProperties": false,
+      "description": "``ping`` —— 心跳，服务端回 ``pong`` 并原样带回 nonce。",
+      "properties": {
+        "nonce": {
+          "default": "",
+          "maxLength": 64,
+          "title": "Nonce",
+          "type": "string"
+        }
+      },
+      "title": "Ping",
+      "type": "object"
+    },
+    "response.cancel": {
+      "$defs": {
+        "StopReason": {
+          "enum": [
+            "completed",
+            "interrupted",
+            "cancelled",
+            "timeout",
+            "error",
+            "max_duration",
+            "tool_pending"
+          ],
+          "title": "StopReason",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "description": "``response.cancel`` —— 取消当前生成（客户端侧打断）。",
+      "properties": {
+        "reason": {
+          "$ref": "#/$defs/StopReason",
+          "default": "interrupted"
+        },
+        "truncate_at_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "已播放到的位置，用于服务端裁剪上下文",
+          "title": "Truncate At Ms"
+        }
+      },
+      "title": "ResponseCancel",
+      "type": "object"
+    },
+    "response.create": {
+      "$defs": {
+        "Modality": {
+          "enum": [
+            "text",
+            "audio",
+            "video"
+          ],
+          "title": "Modality",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "description": "``response.create`` —— 请求模型生成一轮回复。",
+      "properties": {
+        "instructions_suffix": {
+          "anyOf": [
+            {
+              "maxLength": 8000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instructions Suffix"
+        },
+        "max_output_tokens": {
+          "anyOf": [
+            {
+              "maximum": 32768,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Output Tokens"
+        },
+        "modalities": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/Modality"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Modalities"
+        },
+        "temperature": {
+          "anyOf": [
+            {
+              "maximum": 2.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temperature"
+        }
+      },
+      "title": "ResponseCreate",
+      "type": "object"
+    },
+    "session.close": {
+      "additionalProperties": false,
+      "description": "``session.close`` —— 客户端主动结束会话。",
+      "properties": {
+        "reason": {
+          "default": "client_request",
+          "maxLength": 200,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "title": "SessionClose",
+      "type": "object"
+    },
+    "session.update": {
+      "additionalProperties": false,
+      "description": "``session.update`` —— 中途更新会话配置（换音色、改指令、增删工具）。",
+      "properties": {
+        "session": {
+          "description": "SessionConfig 的部分字段",
+          "title": "Session",
+          "type": "object"
+        }
+      },
+      "title": "SessionUpdate",
+      "type": "object"
+    },
+    "tool.result": {
+      "additionalProperties": false,
+      "description": "``tool.result`` —— 回填客户端侧工具的执行结果。",
+      "properties": {
+        "call_id": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "content": {
+          "default": null,
+          "title": "Content"
+        },
+        "elapsed_ms": {
+          "default": 0.0,
+          "minimum": 0.0,
+          "title": "Elapsed Ms",
+          "type": "number"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "call_id"
+      ],
+      "title": "ToolResultIn",
+      "type": "object"
+    }
+  },
+  "enums": {
+    "AudioEncoding": {
+      "enum": [
+        "pcm16",
+        "pcm_f32",
+        "opus",
+        "mulaw"
+      ],
+      "type": "string"
+    },
+    "ClientEventType": {
+      "enum": [
+        "session.update",
+        "input_audio.append",
+        "input_audio.commit",
+        "input_audio.clear",
+        "input_video.frame",
+        "input_text.send",
+        "response.create",
+        "response.cancel",
+        "tool.result",
+        "memory.upsert",
+        "memory.delete",
+        "ping",
+        "session.close"
+      ],
+      "type": "string"
+    },
+    "MemoryLayer": {
+      "enum": [
+        "session",
+        "private_state",
+        "stable_knowledge",
+        "procedural"
+      ],
+      "type": "string"
+    },
+    "Modality": {
+      "enum": [
+        "text",
+        "audio",
+        "video"
+      ],
+      "type": "string"
+    },
+    "ServerEventType": {
+      "enum": [
+        "session.created",
+        "session.updated",
+        "session.closed",
+        "turn.started",
+        "turn.state",
+        "turn.completed",
+        "input_audio.speech_started",
+        "input_audio.speech_stopped",
+        "transcript.delta",
+        "transcript.done",
+        "response.text.delta",
+        "response.text.done",
+        "response.audio.delta",
+        "response.audio.done",
+        "response.done",
+        "response.cancelled",
+        "barge_in.detected",
+        "playback.truncated",
+        "vision.observation",
+        "vision.frame_accepted",
+        "tool.call",
+        "tool.call_done",
+        "memory.injected",
+        "memory.silent",
+        "metrics.tick",
+        "rate_limit.updated",
+        "pong",
+        "error"
+      ],
+      "type": "string"
+    },
+    "SessionState": {
+      "enum": [
+        "created",
+        "active",
+        "ending",
+        "ended",
+        "failed"
+      ],
+      "type": "string"
+    },
+    "StopReason": {
+      "enum": [
+        "completed",
+        "interrupted",
+        "cancelled",
+        "timeout",
+        "error",
+        "max_duration",
+        "tool_pending"
+      ],
+      "type": "string"
+    },
+    "ToolCallState": {
+      "enum": [
+        "pending",
+        "running",
+        "succeeded",
+        "failed",
+        "timeout",
+        "cancelled"
+      ],
+      "type": "string"
+    },
+    "TurnRole": {
+      "enum": [
+        "user",
+        "assistant",
+        "system"
+      ],
+      "type": "string"
+    },
+    "TurnState": {
+      "enum": [
+        "idle",
+        "listening",
+        "thinking",
+        "speaking",
+        "interrupted"
+      ],
+      "type": "string"
+    },
+    "VideoEncoding": {
+      "enum": [
+        "jpeg",
+        "webp",
+        "rgb24"
+      ],
+      "type": "string"
+    }
+  },
+  "envelope": {
+    "additionalProperties": false,
+    "description": "线上消息统一结构。\n\nJSON 形态::\n\n    {\n      \"v\": \"oms.v1\",\n      \"type\": \"response.audio.delta\",\n      \"event_id\": \"evt_01J...\",\n      \"ts\": 1770000000123,\n      \"session_id\": \"sess_01J...\",\n      \"seq\": 42,\n      \"payload\": {...}\n    }",
+    "properties": {
+      "event_id": {
+        "description": "全局唯一事件 ID",
+        "title": "Event Id",
+        "type": "string"
+      },
+      "payload": {
+        "title": "Payload",
+        "type": "object"
+      },
+      "seq": {
+        "anyOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "同会话内单调递增序号，用于断线续传",
+        "title": "Seq"
+      },
+      "session_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Session Id"
+      },
+      "ts": {
+        "description": "服务端 UTC 毫秒时间戳",
+        "title": "Ts",
+        "type": "integer"
+      },
+      "type": {
+        "description": "事件类型，取自 ClientEventType/ServerEventType",
+        "title": "Type",
+        "type": "string"
+      },
+      "v": {
+        "default": "oms.v1",
+        "description": "协议版本",
+        "title": "V",
+        "type": "string"
+      }
+    },
+    "required": [
+      "type"
+    ],
+    "title": "Envelope",
+    "type": "object"
+  },
+  "protocol_version": "oms.v1",
+  "server_events": {
+    "barge_in.detected": {
+      "properties": {
+        "confidence": {
+          "default": 1.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "detected_at_ms": {
+          "default": 0,
+          "title": "Detected At Ms",
+          "type": "integer"
+        },
+        "energy_db": {
+          "default": 0.0,
+          "title": "Energy Db",
+          "type": "number"
+        },
+        "latency_ms": {
+          "default": 0.0,
+          "title": "Latency Ms",
+          "type": "number"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id"
+      ],
+      "title": "BargeInDetected",
+      "type": "object"
+    },
+    "error": {
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "object"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "recoverable": {
+          "default": false,
+          "title": "Recoverable",
+          "type": "boolean"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Id"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "ErrorOut",
+      "type": "object"
+    },
+    "input_audio.speech_started": {
+      "properties": {
+        "audio_start_ms": {
+          "default": 0,
+          "title": "Audio Start Ms",
+          "type": "integer"
+        },
+        "energy_db": {
+          "default": 0.0,
+          "title": "Energy Db",
+          "type": "number"
+        },
+        "turn_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Turn Id"
+        }
+      },
+      "title": "SpeechStarted",
+      "type": "object"
+    },
+    "input_audio.speech_stopped": {
+      "properties": {
+        "audio_end_ms": {
+          "default": 0,
+          "title": "Audio End Ms",
+          "type": "integer"
+        },
+        "duration_ms": {
+          "default": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "turn_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Turn Id"
+        }
+      },
+      "title": "SpeechStopped",
+      "type": "object"
+    },
+    "memory.injected": {
+      "$defs": {
+        "MemoryLayer": {
+          "enum": [
+            "session",
+            "private_state",
+            "stable_knowledge",
+            "procedural"
+          ],
+          "title": "MemoryLayer",
+          "type": "string"
+        }
+      },
+      "properties": {
+        "budget_left": {
+          "default": 0,
+          "title": "Budget Left",
+          "type": "integer"
+        },
+        "layer": {
+          "$ref": "#/$defs/MemoryLayer",
+          "default": "session"
+        },
+        "memory_id": {
+          "title": "Memory Id",
+          "type": "string"
+        },
+        "novelty": {
+          "default": 0.0,
+          "title": "Novelty",
+          "type": "number"
+        },
+        "reason": {
+          "default": "",
+          "title": "Reason",
+          "type": "string"
+        },
+        "relevance": {
+          "default": 0.0,
+          "title": "Relevance",
+          "type": "number"
+        },
+        "rendered": {
+          "default": "",
+          "title": "Rendered",
+          "type": "string"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id",
+        "memory_id"
+      ],
+      "title": "MemoryInjected",
+      "type": "object"
+    },
+    "memory.silent": {
+      "description": "\"保持沉默\"也要上报 —— 这是记忆治理可解释性的关键。",
+      "properties": {
+        "budget_left": {
+          "default": 0,
+          "title": "Budget Left",
+          "type": "integer"
+        },
+        "novelty": {
+          "default": 0.0,
+          "title": "Novelty",
+          "type": "number"
+        },
+        "reason": {
+          "default": "",
+          "title": "Reason",
+          "type": "string"
+        },
+        "relevance": {
+          "default": 0.0,
+          "title": "Relevance",
+          "type": "number"
+        },
+        "top_candidate": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Top Candidate"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id"
+      ],
+      "title": "MemorySilent",
+      "type": "object"
+    },
+    "metrics.tick": {
+      "properties": {
+        "audio_in_ms": {
+          "default": 0,
+          "title": "Audio In Ms",
+          "type": "integer"
+        },
+        "audio_out_ms": {
+          "default": 0,
+          "title": "Audio Out Ms",
+          "type": "integer"
+        },
+        "barge_in_ms": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Barge In Ms"
+        },
+        "dropped_frames": {
+          "default": 0,
+          "title": "Dropped Frames",
+          "type": "integer"
+        },
+        "e2e_ms": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "E2E Ms"
+        },
+        "queue_depth": {
+          "default": 0,
+          "title": "Queue Depth",
+          "type": "integer"
+        },
+        "ttfa_ms": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ttfa Ms"
+        },
+        "ttft_ms": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ttft Ms"
+        },
+        "turn_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Turn Id"
+        }
+      },
+      "title": "MetricsTick",
+      "type": "object"
+    },
+    "playback.truncated": {
+      "properties": {
+        "dropped_frames": {
+          "default": 0,
+          "title": "Dropped Frames",
+          "type": "integer"
+        },
+        "dropped_ms": {
+          "default": 0,
+          "title": "Dropped Ms",
+          "type": "integer"
+        },
+        "truncated_at_ms": {
+          "default": 0,
+          "title": "Truncated At Ms",
+          "type": "integer"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id"
+      ],
+      "title": "PlaybackTruncated",
+      "type": "object"
+    },
+    "pong": {
+      "properties": {
+        "nonce": {
+          "default": "",
+          "title": "Nonce",
+          "type": "string"
+        },
+        "rtt_hint_ms": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rtt Hint Ms"
+        },
+        "server_time_ms": {
+          "default": 0,
+          "title": "Server Time Ms",
+          "type": "integer"
+        }
+      },
+      "title": "Pong",
+      "type": "object"
+    },
+    "rate_limit.updated": {
+      "properties": {
+        "limit": {
+          "default": 0,
+          "title": "Limit",
+          "type": "integer"
+        },
+        "remaining": {
+          "default": 0,
+          "title": "Remaining",
+          "type": "integer"
+        },
+        "reset_at_ms": {
+          "default": 0,
+          "title": "Reset At Ms",
+          "type": "integer"
+        },
+        "scope": {
+          "default": "tenant",
+          "title": "Scope",
+          "type": "string"
+        }
+      },
+      "title": "RateLimitUpdated",
+      "type": "object"
+    },
+    "response.audio.delta": {
+      "$defs": {
+        "AudioEncoding": {
+          "enum": [
+            "pcm16",
+            "pcm_f32",
+            "opus",
+            "mulaw"
+          ],
+          "title": "AudioEncoding",
+          "type": "string"
+        }
+      },
+      "description": "音频增量。高频场景建议走二进制帧，本模型用于 JSON 通道与录制回放。",
+      "properties": {
+        "audio": {
+          "description": "base64 编码的 PCM 数据",
+          "title": "Audio",
+          "type": "string"
+        },
+        "channels": {
+          "default": 1,
+          "title": "Channels",
+          "type": "integer"
+        },
+        "encoding": {
+          "$ref": "#/$defs/AudioEncoding",
+          "default": "pcm16"
+        },
+        "pts_ms": {
+          "default": 0,
+          "title": "Pts Ms",
+          "type": "integer"
+        },
+        "sample_rate": {
+          "default": 24000,
+          "title": "Sample Rate",
+          "type": "integer"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id",
+        "audio"
+      ],
+      "title": "AudioDelta",
+      "type": "object"
+    },
+    "response.audio.done": {
+      "properties": {
+        "total_bytes": {
+          "default": 0,
+          "title": "Total Bytes",
+          "type": "integer"
+        },
+        "total_ms": {
+          "default": 0,
+          "title": "Total Ms",
+          "type": "integer"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id"
+      ],
+      "title": "AudioDone",
+      "type": "object"
+    },
+    "response.cancelled": {
+      "$defs": {
+        "StopReason": {
+          "enum": [
+            "completed",
+            "interrupted",
+            "cancelled",
+            "timeout",
+            "error",
+            "max_duration",
+            "tool_pending"
+          ],
+          "title": "StopReason",
+          "type": "string"
+        }
+      },
+      "properties": {
+        "reason": {
+          "$ref": "#/$defs/StopReason",
+          "default": "interrupted"
+        },
+        "truncated_at_ms": {
+          "default": 0,
+          "title": "Truncated At Ms",
+          "type": "integer"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id"
+      ],
+      "title": "ResponseCancelled",
+      "type": "object"
+    },
+    "response.done": {
+      "$defs": {
+        "StopReason": {
+          "enum": [
+            "completed",
+            "interrupted",
+            "cancelled",
+            "timeout",
+            "error",
+            "max_duration",
+            "tool_pending"
+          ],
+          "title": "StopReason",
+          "type": "string"
+        }
+      },
+      "properties": {
+        "metrics": {
+          "title": "Metrics",
+          "type": "object"
+        },
+        "stop_reason": {
+          "$ref": "#/$defs/StopReason",
+          "default": "completed"
+        },
+        "text": {
+          "default": "",
+          "title": "Text",
+          "type": "string"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "usage": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Usage",
+          "type": "object"
+        }
+      },
+      "required": [
+        "turn_id"
+      ],
+      "title": "ResponseDone",
+      "type": "object"
+    },
+    "response.text.delta": {
+      "properties": {
+        "delta": {
+          "title": "Delta",
+          "type": "string"
+        },
+        "index": {
+          "default": 0,
+          "title": "Index",
+          "type": "integer"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id",
+        "delta"
+      ],
+      "title": "TextDelta",
+      "type": "object"
+    },
+    "response.text.done": {
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id",
+        "text"
+      ],
+      "title": "TextDone",
+      "type": "object"
+    },
+    "session.closed": {
+      "$defs": {
+        "SessionState": {
+          "enum": [
+            "created",
+            "active",
+            "ending",
+            "ended",
+            "failed"
+          ],
+          "title": "SessionState",
+          "type": "string"
+        }
+      },
+      "properties": {
+        "duration_ms": {
+          "default": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "reason": {
+          "default": "completed",
+          "title": "Reason",
+          "type": "string"
+        },
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/SessionState",
+          "default": "ended"
+        },
+        "stats": {
+          "title": "Stats",
+          "type": "object"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "SessionClosed",
+      "type": "object"
+    },
+    "session.created": {
+      "$defs": {
+        "SessionState": {
+          "enum": [
+            "created",
+            "active",
+            "ending",
+            "ended",
+            "failed"
+          ],
+          "title": "SessionState",
+          "type": "string"
+        }
+      },
+      "properties": {
+        "config": {
+          "title": "Config",
+          "type": "object"
+        },
+        "expires_in_s": {
+          "default": 0,
+          "title": "Expires In S",
+          "type": "integer"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model"
+        },
+        "protocol_version": {
+          "default": "oms.v1",
+          "title": "Protocol Version",
+          "type": "string"
+        },
+        "provider": {
+          "default": "mock",
+          "title": "Provider",
+          "type": "string"
+        },
+        "server_time_ms": {
+          "default": 0,
+          "title": "Server Time Ms",
+          "type": "integer"
+        },
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/SessionState",
+          "default": "active"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "SessionCreated",
+      "type": "object"
+    },
+    "session.updated": {
+      "properties": {
+        "changed": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Changed",
+          "type": "array"
+        },
+        "config": {
+          "title": "Config",
+          "type": "object"
+        },
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "SessionUpdated",
+      "type": "object"
+    },
+    "tool.call": {
+      "$defs": {
+        "ToolCallState": {
+          "enum": [
+            "pending",
+            "running",
+            "succeeded",
+            "failed",
+            "timeout",
+            "cancelled"
+          ],
+          "title": "ToolCallState",
+          "type": "string"
+        }
+      },
+      "properties": {
+        "arguments": {
+          "title": "Arguments",
+          "type": "object"
+        },
+        "call_id": {
+          "title": "Call Id",
+          "type": "string"
+        },
+        "executed_by": {
+          "default": "client",
+          "description": "client | server",
+          "title": "Executed By",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "requires_confirmation": {
+          "default": false,
+          "title": "Requires Confirmation",
+          "type": "boolean"
+        },
+        "state": {
+          "$ref": "#/$defs/ToolCallState",
+          "default": "pending"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id",
+        "turn_id",
+        "name"
+      ],
+      "title": "ToolCallOut",
+      "type": "object"
+    },
+    "tool.call_done": {
+      "$defs": {
+        "ToolCallState": {
+          "enum": [
+            "pending",
+            "running",
+            "succeeded",
+            "failed",
+            "timeout",
+            "cancelled"
+          ],
+          "title": "ToolCallState",
+          "type": "string"
+        }
+      },
+      "properties": {
+        "call_id": {
+          "title": "Call Id",
+          "type": "string"
+        },
+        "content": {
+          "default": null,
+          "title": "Content"
+        },
+        "elapsed_ms": {
+          "default": 0.0,
+          "title": "Elapsed Ms",
+          "type": "number"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "name": {
+          "default": "",
+          "title": "Name",
+          "type": "string"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "state": {
+          "$ref": "#/$defs/ToolCallState",
+          "default": "succeeded"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id",
+        "turn_id"
+      ],
+      "title": "ToolCallDoneOut",
+      "type": "object"
+    },
+    "transcript.delta": {
+      "$defs": {
+        "WordTimingOut": {
+          "properties": {
+            "confidence": {
+              "default": 1.0,
+              "title": "Confidence",
+              "type": "number"
+            },
+            "end_ms": {
+              "default": 0,
+              "title": "End Ms",
+              "type": "integer"
+            },
+            "start_ms": {
+              "default": 0,
+              "title": "Start Ms",
+              "type": "integer"
+            },
+            "word": {
+              "title": "Word",
+              "type": "string"
+            }
+          },
+          "required": [
+            "word"
+          ],
+          "title": "WordTimingOut",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "end_ms": {
+          "default": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "is_final": {
+          "default": false,
+          "title": "Is Final",
+          "type": "boolean"
+        },
+        "language": {
+          "default": "zh-CN",
+          "title": "Language",
+          "type": "string"
+        },
+        "speaker": {
+          "default": "user",
+          "title": "Speaker",
+          "type": "string"
+        },
+        "stability": {
+          "default": 0.0,
+          "title": "Stability",
+          "type": "number"
+        },
+        "start_ms": {
+          "default": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "words": {
+          "items": {
+            "$ref": "#/$defs/WordTimingOut"
+          },
+          "title": "Words",
+          "type": "array"
+        }
+      },
+      "required": [
+        "turn_id",
+        "text"
+      ],
+      "title": "TranscriptDeltaOut",
+      "type": "object"
+    },
+    "transcript.done": {
+      "properties": {
+        "confidence": {
+          "default": 1.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "end_ms": {
+          "default": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "language": {
+          "default": "zh-CN",
+          "title": "Language",
+          "type": "string"
+        },
+        "speaker": {
+          "default": "user",
+          "title": "Speaker",
+          "type": "string"
+        },
+        "start_ms": {
+          "default": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id",
+        "text"
+      ],
+      "title": "TranscriptDoneOut",
+      "type": "object"
+    },
+    "turn.completed": {
+      "$defs": {
+        "StopReason": {
+          "enum": [
+            "completed",
+            "interrupted",
+            "cancelled",
+            "timeout",
+            "error",
+            "max_duration",
+            "tool_pending"
+          ],
+          "title": "StopReason",
+          "type": "string"
+        },
+        "TurnRole": {
+          "enum": [
+            "user",
+            "assistant",
+            "system"
+          ],
+          "title": "TurnRole",
+          "type": "string"
+        }
+      },
+      "properties": {
+        "index": {
+          "default": 0,
+          "title": "Index",
+          "type": "integer"
+        },
+        "metrics": {
+          "title": "Metrics",
+          "type": "object"
+        },
+        "role": {
+          "$ref": "#/$defs/TurnRole",
+          "default": "assistant"
+        },
+        "stop_reason": {
+          "$ref": "#/$defs/StopReason",
+          "default": "completed"
+        },
+        "text": {
+          "default": "",
+          "title": "Text",
+          "type": "string"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id"
+      ],
+      "title": "TurnCompleted",
+      "type": "object"
+    },
+    "turn.started": {
+      "$defs": {
+        "TurnRole": {
+          "enum": [
+            "user",
+            "assistant",
+            "system"
+          ],
+          "title": "TurnRole",
+          "type": "string"
+        },
+        "TurnState": {
+          "enum": [
+            "idle",
+            "listening",
+            "thinking",
+            "speaking",
+            "interrupted"
+          ],
+          "title": "TurnState",
+          "type": "string"
+        }
+      },
+      "properties": {
+        "index": {
+          "default": 0,
+          "title": "Index",
+          "type": "integer"
+        },
+        "role": {
+          "$ref": "#/$defs/TurnRole",
+          "default": "assistant"
+        },
+        "state": {
+          "$ref": "#/$defs/TurnState",
+          "default": "listening"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id"
+      ],
+      "title": "TurnStarted",
+      "type": "object"
+    },
+    "turn.state": {
+      "$defs": {
+        "TurnState": {
+          "enum": [
+            "idle",
+            "listening",
+            "thinking",
+            "speaking",
+            "interrupted"
+          ],
+          "title": "TurnState",
+          "type": "string"
+        }
+      },
+      "properties": {
+        "previous": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TurnState"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reason": {
+          "default": "",
+          "title": "Reason",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/TurnState"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id",
+        "state"
+      ],
+      "title": "TurnStateChanged",
+      "type": "object"
+    },
+    "vision.frame_accepted": {
+      "properties": {
+        "accepted": {
+          "default": true,
+          "title": "Accepted",
+          "type": "boolean"
+        },
+        "fps_effective": {
+          "default": 0.0,
+          "title": "Fps Effective",
+          "type": "number"
+        },
+        "keyframe_score": {
+          "default": 0.0,
+          "title": "Keyframe Score",
+          "type": "number"
+        },
+        "pts_ms": {
+          "default": 0,
+          "title": "Pts Ms",
+          "type": "integer"
+        },
+        "reason": {
+          "default": "",
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "title": "VisionFrameAccepted",
+      "type": "object"
+    },
+    "vision.observation": {
+      "$defs": {
+        "VisualEntityOut": {
+          "properties": {
+            "bbox": {
+              "description": "[x, y, w, h] 归一化坐标",
+              "items": {
+                "type": "number"
+              },
+              "title": "Bbox",
+              "type": "array"
+            },
+            "confidence": {
+              "default": 0.0,
+              "title": "Confidence",
+              "type": "number"
+            },
+            "label": {
+              "title": "Label",
+              "type": "string"
+            }
+          },
+          "required": [
+            "label"
+          ],
+          "title": "VisualEntityOut",
+          "type": "object"
+        }
+      },
+      "properties": {
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        },
+        "entities": {
+          "items": {
+            "$ref": "#/$defs/VisualEntityOut"
+          },
+          "title": "Entities",
+          "type": "array"
+        },
+        "latency_ms": {
+          "default": 0.0,
+          "title": "Latency Ms",
+          "type": "number"
+        },
+        "pts_ms": {
+          "default": 0,
+          "title": "Pts Ms",
+          "type": "integer"
+        },
+        "scene_change": {
+          "default": false,
+          "title": "Scene Change",
+          "type": "boolean"
+        }
+      },
+      "title": "VisionObservationOut",
+      "type": "object"
+    }
+  },
+  "title": "omnistream realtime protocol"
+}

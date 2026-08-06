@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "limit": {
+      "default": 0,
+      "title": "Limit",
+      "type": "integer"
+    },
+    "remaining": {
+      "default": 0,
+      "title": "Remaining",
+      "type": "integer"
+    },
+    "reset_at_ms": {
+      "default": 0,
+      "title": "Reset At Ms",
+      "type": "integer"
+    },
+    "scope": {
+      "default": "tenant",
+      "title": "Scope",
+      "type": "string"
+    }
+  },
+  "title": "RateLimitUpdated",
+  "type": "object"
+}

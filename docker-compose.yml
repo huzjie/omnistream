@@ -1,0 +1,72 @@
+# OmniStream 一键本地编排：mock 模式零依赖跑通全栈
+version: "3.9"
+
+services:
+  api:
+    build: .
+    image: omnistream:dev
+    container_name: omnistream-api
+    env_file: .env
+    environment:
+      OMS_STORAGE__DATABASE_URL: sqlite:////data/omnistream.db
+      OMS_STORAGE__USE_REDIS: "false"
+      OMS_PROVIDERS__DEFAULT: mock
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+      - ./config:/app/config:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    container_name: omnistream-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    profiles: ["full"]
+
+  worker:
+    build: .
+    image: omnistream:dev
+    container_name: omnistream-worker
+    depends_on:
+      - api
+    env_file: .env
+    environment:
+      OMS_STORAGE__USE_REDIS: "false"
+    command: ["python", "-m", "omnistream.workers.celery_app", "worker", "--loglevel=info"]
+    restart: unless-stopped
+    profiles: ["full"]
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: omnistream-prom
+    volumes:
+      - ./deploy/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    profiles: ["observability"]
+
+  grafana:
+    image: grafana/grafana:11.2.2
+    container_name: omnistream-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - ./deploy/grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    profiles: ["observability"]
+
+volumes:
+  redis-data:

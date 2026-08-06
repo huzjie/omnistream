@@ -1,0 +1,33 @@
+{
+  "properties": {
+    "confidence": {
+      "default": 1.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "detected_at_ms": {
+      "default": 0,
+      "title": "Detected At Ms",
+      "type": "integer"
+    },
+    "energy_db": {
+      "default": 0.0,
+      "title": "Energy Db",
+      "type": "number"
+    },
+    "latency_ms": {
+      "default": 0.0,
+      "title": "Latency Ms",
+      "type": "number"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id"
+  ],
+  "title": "BargeInDetected",
+  "type": "object"
+}

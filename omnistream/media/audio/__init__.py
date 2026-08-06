@@ -1,0 +1,190 @@
+"""音频子包：格式、重采样、编解码、抖动缓冲、播放队列与前处理。
+
+本包**不引入任何强制的重依赖** —— ``opus_codec`` 内部的 PyAV 是可选的，
+未安装时 :data:`omnistream.media.audio.opus_codec.OPUS_AVAILABLE` 为 ``False``，
+链路自动退回 PCM16 直通。因此 ``import omnistream.media.audio`` 在最小依赖
+（numpy + pydantic）下必定成功。
+"""
+from __future__ import annotations
+
+from omnistream.media.audio.format import (
+    COMPRESSED_ENCODINGS,
+    MULAW_CANONICAL_RATE,
+    OPUS_SAMPLE_RATES,
+    RAW_ENCODINGS,
+    ConversionPlan,
+    bytes_per_frame,
+    bytes_per_sample,
+    can_convert,
+    describe,
+    duration_ms_of,
+    format_from_header,
+    header_of,
+    is_raw_pcm,
+    make_format,
+    plan_conversion,
+    samples_for_ms,
+    validate_format,
+)
+from omnistream.media.audio.frame_slicer import FrameSlicer
+from omnistream.media.audio.gain import (
+    AutoGainControl,
+    GainStats,
+    Limiter,
+    apply_gain_db,
+    soft_limit,
+)
+from omnistream.media.audio.jitter_buffer import AdaptiveJitterBuffer, JitterStats
+from omnistream.media.audio.mixer import AudioMixer, MixerTrack
+from omnistream.media.audio.mulaw import (
+    decode_chunk as mulaw_decode_chunk,
+)
+from omnistream.media.audio.mulaw import (
+    encode_chunk as mulaw_encode_chunk,
+)
+from omnistream.media.audio.noise_gate import (
+    NoiseGate,
+    NoiseGateStats,
+    NoiseSuppressor,
+    SpectralDenoiser,
+)
+from omnistream.media.audio.opus_codec import (
+    OPUS_AVAILABLE,
+    OpusConfig,
+    OpusDecoder,
+    OpusEncoder,
+)
+from omnistream.media.audio.pcm import (
+    bytes_to_float32,
+    chunk_from_float32,
+    concat,
+    db_to_linear,
+    dbfs,
+    deinterleave,
+    float32_to_bytes,
+    interleave,
+    linear_to_db,
+    mix_to_mono,
+    mono_to_stereo,
+    peak,
+    remix,
+    rms,
+    slice_frames,
+    split_fixed,
+    to_float32,
+)
+from omnistream.media.audio.playback_queue import PlaybackQueue, PlaybackStats
+from omnistream.media.audio.resampler import (
+    AUDIOOP_AVAILABLE,
+    SOXR_AVAILABLE,
+    Resampler,
+    available_backends,
+    resample_once,
+)
+from omnistream.media.audio.silence import (
+    SilenceDetector,
+    SilenceStats,
+    comfort_noise,
+    comfort_noise_chunk,
+    find_silence_spans,
+    is_silent,
+    silence,
+    silence_bytes,
+    silence_chunk,
+)
+from omnistream.media.audio.timeline import AudioTimeline, TimelineStats
+from omnistream.media.audio.wav_io import (
+    WavInfo,
+    WavStreamWriter,
+    chunks_to_wav,
+    encode_wav_bytes,
+    iter_chunks,
+    probe_wav,
+    read_wav,
+    read_wav_bytes,
+    write_wav,
+)
+
+__all__ = [
+    "AUDIOOP_AVAILABLE",
+    "COMPRESSED_ENCODINGS",
+    "MULAW_CANONICAL_RATE",
+    "OPUS_AVAILABLE",
+    "OPUS_SAMPLE_RATES",
+    "RAW_ENCODINGS",
+    "SOXR_AVAILABLE",
+    "AdaptiveJitterBuffer",
+    "AudioMixer",
+    "AudioTimeline",
+    "AutoGainControl",
+    "ConversionPlan",
+    "FrameSlicer",
+    "GainStats",
+    "JitterStats",
+    "Limiter",
+    "MixerTrack",
+    "NoiseGate",
+    "NoiseGateStats",
+    "NoiseSuppressor",
+    "OpusConfig",
+    "OpusDecoder",
+    "OpusEncoder",
+    "PlaybackQueue",
+    "PlaybackStats",
+    "Resampler",
+    "SilenceDetector",
+    "SilenceStats",
+    "SpectralDenoiser",
+    "TimelineStats",
+    "WavInfo",
+    "WavStreamWriter",
+    "apply_gain_db",
+    "available_backends",
+    "bytes_per_frame",
+    "bytes_per_sample",
+    "bytes_to_float32",
+    "can_convert",
+    "chunk_from_float32",
+    "chunks_to_wav",
+    "comfort_noise",
+    "comfort_noise_chunk",
+    "concat",
+    "db_to_linear",
+    "dbfs",
+    "deinterleave",
+    "describe",
+    "duration_ms_of",
+    "encode_wav_bytes",
+    "find_silence_spans",
+    "float32_to_bytes",
+    "format_from_header",
+    "header_of",
+    "interleave",
+    "is_raw_pcm",
+    "is_silent",
+    "iter_chunks",
+    "linear_to_db",
+    "make_format",
+    "mix_to_mono",
+    "mono_to_stereo",
+    "mulaw_decode_chunk",
+    "mulaw_encode_chunk",
+    "peak",
+    "plan_conversion",
+    "probe_wav",
+    "read_wav",
+    "read_wav_bytes",
+    "remix",
+    "resample_once",
+    "rms",
+    "samples_for_ms",
+    "silence",
+    "silence_bytes",
+    "silence_chunk",
+    "slice_frames",
+    "soft_limit",
+    "split_fixed",
+    "to_float32",
+    "validate_format",
+    "write_wav",
+]

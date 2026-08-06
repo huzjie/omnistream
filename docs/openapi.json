@@ -1,0 +1,142 @@
+{
+  "components": {
+    "securitySchemes": {
+      "apiKeyAuth": {
+        "in": "header",
+        "name": "X-API-Key",
+        "type": "apiKey"
+      },
+      "bearerAuth": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http"
+      }
+    }
+  },
+  "info": {
+    "contact": {
+      "name": "OmniStream",
+      "url": "https://github.com/omnistream/omnistream"
+    },
+    "description": "Enterprise-grade realtime full-duplex omni-modal (audio + video + text) interaction platform. Self-hostable, multi-provider, observable.\n\n企业级实时全双工音视频多模态交互平台：可自托管、多 Provider 可插拔、可观测。",
+    "license": {
+      "name": "Apache-2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    },
+    "title": "OmniStream",
+    "version": "1.0.0",
+    "x-generated-by": "scripts/gen_openapi.py"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/healthz": {
+      "get": {
+        "description": "存活探针：进程还在就返回 200，绝不访问任何外部依赖。",
+        "operationId": "healthz_healthz_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Healthz Healthz Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Liveness probe",
+        "tags": [
+          "ops"
+        ]
+      }
+    },
+    "/readyz": {
+      "get": {
+        "description": "就绪探针：生命周期全部启动完成后才返回 200。",
+        "operationId": "readyz_readyz_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Readiness probe",
+        "tags": [
+          "ops"
+        ]
+      }
+    },
+    "/version": {
+      "get": {
+        "operationId": "version_version_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Response Version Version Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Build/version info",
+        "tags": [
+          "ops"
+        ]
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    },
+    {
+      "apiKeyAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "description": "Local development",
+      "url": "http://localhost:8080"
+    },
+    {
+      "description": "Self-hosted deployment",
+      "url": "https://api.example.com"
+    }
+  ],
+  "tags": [
+    {
+      "description": "Health, readiness and version endpoints.",
+      "name": "ops"
+    },
+    {
+      "description": "Realtime session lifecycle.",
+      "name": "sessions"
+    },
+    {
+      "description": "Provider catalog, health and routing.",
+      "name": "providers"
+    },
+    {
+      "description": "Long/short term memory operations.",
+      "name": "memory"
+    },
+    {
+      "description": "Recording, audit, quality and PII.",
+      "name": "governance"
+    },
+    {
+      "description": "Tenants, users, API keys and quotas.",
+      "name": "admin"
+    }
+  ]
+}

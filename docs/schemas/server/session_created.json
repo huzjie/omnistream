@@ -1,0 +1,66 @@
+{
+  "$defs": {
+    "SessionState": {
+      "enum": [
+        "created",
+        "active",
+        "ending",
+        "ended",
+        "failed"
+      ],
+      "title": "SessionState",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "config": {
+      "title": "Config",
+      "type": "object"
+    },
+    "expires_in_s": {
+      "default": 0,
+      "title": "Expires In S",
+      "type": "integer"
+    },
+    "model": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model"
+    },
+    "protocol_version": {
+      "default": "oms.v1",
+      "title": "Protocol Version",
+      "type": "string"
+    },
+    "provider": {
+      "default": "mock",
+      "title": "Provider",
+      "type": "string"
+    },
+    "server_time_ms": {
+      "default": 0,
+      "title": "Server Time Ms",
+      "type": "integer"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/SessionState",
+      "default": "active"
+    }
+  },
+  "required": [
+    "session_id"
+  ],
+  "title": "SessionCreated",
+  "type": "object"
+}

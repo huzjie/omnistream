@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "audio_end_ms": {
+      "default": 0,
+      "title": "Audio End Ms",
+      "type": "integer"
+    },
+    "duration_ms": {
+      "default": 0,
+      "title": "Duration Ms",
+      "type": "integer"
+    },
+    "turn_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Turn Id"
+    }
+  },
+  "title": "SpeechStopped",
+  "type": "object"
+}

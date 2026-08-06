@@ -1,0 +1,14 @@
+{
+  "additionalProperties": false,
+  "description": "``ping`` —— 心跳，服务端回 ``pong`` 并原样带回 nonce。",
+  "properties": {
+    "nonce": {
+      "default": "",
+      "maxLength": 64,
+      "title": "Nonce",
+      "type": "string"
+    }
+  },
+  "title": "Ping",
+  "type": "object"
+}

@@ -1,0 +1,14 @@
+apiVersion: v2
+name: omnistream
+description: OmniStream — 企业级实时全双工音视频多模态交互平台
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - realtime
+  - multimodal
+  - ai
+  - webrtc
+  - full-duplex
+maintainers:
+  - name: OmniStream Contributors

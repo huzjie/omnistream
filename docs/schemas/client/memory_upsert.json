@@ -1,0 +1,86 @@
+{
+  "$defs": {
+    "MemoryLayer": {
+      "enum": [
+        "session",
+        "private_state",
+        "stable_knowledge",
+        "procedural"
+      ],
+      "title": "MemoryLayer",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "``memory.upsert`` —— 客户端显式写入一条记忆。",
+  "properties": {
+    "confidence": {
+      "default": 0.8,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "content": {
+      "maxLength": 8000,
+      "minLength": 1,
+      "title": "Content",
+      "type": "string"
+    },
+    "importance": {
+      "default": 0.5,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Importance",
+      "type": "number"
+    },
+    "key": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Key"
+    },
+    "layer": {
+      "$ref": "#/$defs/MemoryLayer",
+      "default": "session"
+    },
+    "subject": {
+      "default": "user",
+      "maxLength": 64,
+      "title": "Subject",
+      "type": "string"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "ttl_s": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ttl S"
+    }
+  },
+  "required": [
+    "content"
+  ],
+  "title": "MemoryUpsert",
+  "type": "object"
+}

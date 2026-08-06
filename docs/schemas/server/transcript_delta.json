@@ -1,0 +1,85 @@
+{
+  "$defs": {
+    "WordTimingOut": {
+      "properties": {
+        "confidence": {
+          "default": 1.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "end_ms": {
+          "default": 0,
+          "title": "End Ms",
+          "type": "integer"
+        },
+        "start_ms": {
+          "default": 0,
+          "title": "Start Ms",
+          "type": "integer"
+        },
+        "word": {
+          "title": "Word",
+          "type": "string"
+        }
+      },
+      "required": [
+        "word"
+      ],
+      "title": "WordTimingOut",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "end_ms": {
+      "default": 0,
+      "title": "End Ms",
+      "type": "integer"
+    },
+    "is_final": {
+      "default": false,
+      "title": "Is Final",
+      "type": "boolean"
+    },
+    "language": {
+      "default": "zh-CN",
+      "title": "Language",
+      "type": "string"
+    },
+    "speaker": {
+      "default": "user",
+      "title": "Speaker",
+      "type": "string"
+    },
+    "stability": {
+      "default": 0.0,
+      "title": "Stability",
+      "type": "number"
+    },
+    "start_ms": {
+      "default": 0,
+      "title": "Start Ms",
+      "type": "integer"
+    },
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    },
+    "words": {
+      "items": {
+        "$ref": "#/$defs/WordTimingOut"
+      },
+      "title": "Words",
+      "type": "array"
+    }
+  },
+  "required": [
+    "turn_id",
+    "text"
+  ],
+  "title": "TranscriptDeltaOut",
+  "type": "object"
+}

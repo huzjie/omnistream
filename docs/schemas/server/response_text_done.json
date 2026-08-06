@@ -1,0 +1,18 @@
+{
+  "properties": {
+    "text": {
+      "title": "Text",
+      "type": "string"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id",
+    "text"
+  ],
+  "title": "TextDone",
+  "type": "object"
+}

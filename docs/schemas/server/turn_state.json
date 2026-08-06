@@ -1,0 +1,46 @@
+{
+  "$defs": {
+    "TurnState": {
+      "enum": [
+        "idle",
+        "listening",
+        "thinking",
+        "speaking",
+        "interrupted"
+      ],
+      "title": "TurnState",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "previous": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TurnState"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "reason": {
+      "default": "",
+      "title": "Reason",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/TurnState"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id",
+    "state"
+  ],
+  "title": "TurnStateChanged",
+  "type": "object"
+}

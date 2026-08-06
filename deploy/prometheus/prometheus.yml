@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: omnistream
+    static_configs:
+      - targets: ["omnistream-api:9464"]
+        labels:
+          service: omnistream-api
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]

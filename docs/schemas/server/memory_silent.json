@@ -1,0 +1,46 @@
+{
+  "description": "\"保持沉默\"也要上报 —— 这是记忆治理可解释性的关键。",
+  "properties": {
+    "budget_left": {
+      "default": 0,
+      "title": "Budget Left",
+      "type": "integer"
+    },
+    "novelty": {
+      "default": 0.0,
+      "title": "Novelty",
+      "type": "number"
+    },
+    "reason": {
+      "default": "",
+      "title": "Reason",
+      "type": "string"
+    },
+    "relevance": {
+      "default": 0.0,
+      "title": "Relevance",
+      "type": "number"
+    },
+    "top_candidate": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Top Candidate"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "turn_id"
+  ],
+  "title": "MemorySilent",
+  "type": "object"
+}
